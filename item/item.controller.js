@@ -5,7 +5,14 @@ async function create(data) {
 }
 
 async function read(filter = {}) {
-    return await itemModel.find(filter)
+    try {
+
+        const answer = await itemModel.find(filter)
+        return answer
+    } catch (error) {
+        console.log("error in read function", error);
+        throw error
+    }
 }
 
 async function readOne(filter) {
@@ -27,6 +34,13 @@ async function updateById(id, newData) {
 async function turnInactive(id) {
     return await itemModel.updateOne({ _id: id }, { isActive: false })
 }
+// async function starter() {
+//     const db = require('../db')
+//     await db.connect()
 
+//     const result = await read({ category: "fruits" })
+//     console.log(result);
+// }
+// starter()
 
 module.exports = { create, read, readOne, readOneById, updateOne, updateById, turnInactive }

@@ -8,12 +8,21 @@ const userSchema = new mongoose.Schema({
         type: String
     },
     email: {
-        type: String
+        type: String,
+        unique: true,
+        required: true,
+        trim: true,
+        lowercase: true,
+        match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email address']
     },
     password: {
         type: String
     },
-    permission: "user" | "admin",
+    permission: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user"
+    },
     orders: [{
         orderId: {
             type: mongoose.SchemaTypes.ObjectId,
@@ -21,10 +30,12 @@ const userSchema = new mongoose.Schema({
         }
     }],
     createData: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     isActive: {
-        type: Boolean
+        type: Boolean,
+        default: true
     }
 })
 
